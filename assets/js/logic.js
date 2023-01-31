@@ -16,23 +16,23 @@ let eventsHour = [
         event: '',
     },
     {
-        hour1: 1,
+        hour13: 13,
         event: '',
     },
     {
-        hour2: 2,
+        hour14: 14,
         event: '',
     },
     {
-        hour3: 3,
+        hour15: 15,
         event: '',
     },
     {
-        hour4: 4,
+        hour16: 16,
         event: '',
     },
     {
-        hour5: 5,
+        hour17: 17,
         event: '',
     }
 ]
@@ -73,12 +73,31 @@ if (localStorage.getItem('events')) {
     eventsHour = JSON.parse(localStorage.getItem('events'));
 }
 let hr = 9;
+let hr24 = 9;
 for (let j = 0; j < eventsHour.length; j++) {
-    console.log(eventsHour[j]);
-    $(`.hour${hr}`).siblings(".textarea").val(eventsHour[j].event);
+    const hourText =  $(`.hour${hr}`).siblings('.textarea');
+    hourText.val(eventsHour[j].event);
+    if (now.format('HH') == eventsHour[j][`hour${hr24}`]) {
+        hourText.addClass('present');
+        if (hourText.hasClass('past')) hourText.removeClass("past");
+        if (hourText.hasClass('future')) hourText.removeClass("future");
+    }
+    else if (now.format('HH') > eventsHour[j][`hour${hr24}`]) {
+        hourText.addClass('past');
+        if (hourText.hasClass('future')) hourText.removeClass('future');
+        if (hourText.hasClass('present')) hourText.removeClass('present');
+    }
+    else {
+        hourText.addClass('future');
+        if (hourText.hasClass('past')) hourText.removeClass('past');
+        if (hourText.hasClass('present')) hourText.removeClass('present');
+    }
     hr++;
+    hr24++;
     if (hr > 12) hr = hr - 12;
 }
 
+
+
 // attach a listener to all save buttons
-$(".saveBtn").on("click", save);
+$('.saveBtn').on('click', save);
