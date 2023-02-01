@@ -38,7 +38,7 @@ let eventsHour = [
 ]
 
 // Get the current date and time
-let now = moment();
+let now = moment('10', 'HH');
 date = now.format('dddd, MMMM Do');
 
 // populate the DOM with the current date
